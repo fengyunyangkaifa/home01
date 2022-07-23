@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usian.mapper.TeacherMapper">
+    <delete id="deleteById">
+
+    </delete>
+    <!--获取所有的员工信息带部门-->
+    <select id="findAll" resultMap="map1">
+        select s.s_id sId,s.s_name sName,s.s_age sAge,s.s_birthday sBirthday,s.s_status sStatus,s.hobby,s.tid id,teacher.t_id id,teacher.t_name tName,teacher.t_type tType,teacher.t_age tAge from teacher right join student s on teacher.t_id = s.tid
+    </select>
+<!-- result 映射中 column sql别名 property 对应的是 实体类-->
+    <resultMap id="map1" type="com.usian.pojo.Teacher" autoMapping="true">
+        <id column="id" property="id"></id>
+        <collection property="student" ofType="com.usian.pojo.Student" autoMapping="true">
+            <id column="sId" property="sId"></id>
+        </collection>
+    </resultMap>
+    <!--多条件查询-->
+    <select id="findPage" resultMap="map1">
+        select s.s_id sId,s.s_name sName,s.s_age sAge,s.s_birthday sBirthday,s.s_status sStatus,s.hobby,s.tid id,teacher.t_id id,teacher.t_name tName,teacher.t_type tType,teacher.t_age tAge from teacher right join student s on teacher.t_id = s.tid
+      <where>
+          <if test="tName != null and tName.trim()!= ''">
+              teacher.t_name like '%${tName}%'
+          </if>
+      </where>
+    </select>
+    <select id="findByIdStudentAll">
+        select s.s_id from teacher t left join student s on t.t_id = s.tid where t.t_id in(#{id})
+    </select>
+    <!--    &lt;!&ndash;批量删除&ndash;&gt;-->
+<!--    <delete id="deleteEmployee">-->
+<!--        delete from employee where eid in-->
+<!--        <foreach collection="ids" item="eid" open="(" close=")" separator=",">-->
+<!--            #{eid}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+
+</mapper>
+

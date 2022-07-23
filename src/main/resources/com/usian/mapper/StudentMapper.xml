@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.usian.mapper.StudentMapper">
+<!-- 添加时要注意的是 #{}里的字段是实体类的字段-->
+    <insert id="addStudent">
+        insert into student value
+        <foreach collection="studentList" item="s" separator=",">
+            (null,#{s.sName},#{s.sAge},#{s.sBirthday},#{s.sStatus},#{s.hobby},#{tid})
+        </foreach>
+    </insert>
+    <!--批量删除-->
+    <delete id="deleteById">
+        delete from student where tid in (#{tid})
+    </delete>
+    <select id="findByIdAllStudent" resultType="com.usian.pojo.Student">
+        select s.s_id sId,s.s_name sName,s.s_age sAge,s.s_birthday sBirthday,s.s_status sStatus,s.hobby,s.tid id from student s where tid in (#{tid})
+    </select>
+
+</mapper>
+
